@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>2048 PUZZLE GAME</title>
+
+  <link href="main.css" rel="stylesheet" type="text/css">
+  <link rel="shortcut icon" href="icon.png">
+  <link rel="apple-touch-icon" href="meta/apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0, maximum-scale=1, user-scalable=no, minimal-ui">
+</head>
+
+<body>
+  <!-- The title bar that will be visible on all screens -->
+  <div id="title-bar">
+    
+  </div>
+
+  <div class="logo-container">
+    <img src="website-logo.png" alt="Logo">
+  </div>
+  
+  <div class="title-screen">
+    <div>
+      <h1>2048 PUZZLE GAME</h1>
+      <div class="game-buttons">
+        <button id="game-2048">HOW TO PLAY</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="instructions-container" id="instructions-container" style="display: none;">
+    <div class="instructions">
+      <p><strong style="color: rgb(0, 255, 242); font-size: 44px;">HOW TO PLAY</strong></p>
+
+      <p>Use your arrow keys to move the tiles.</p>
+      <p>When two tiles with the same number touch, they merge into one!.</p>
+      <p>Press ESC to pause the game.</p>
+      <p>GOOD LUCK!</p>
+      <button id="start-game">Start Game</button>
+    </div>
+  </div>
+
+  <div class="game-screen" id="game-screen" style="display: none;">
+    <div class="logo-container">
+      <img src="website-logo.png" alt="Logo">
+    </div>
+
+    <div class="volume-controls">
+      <label for="click-volume">Click Sound Volume:</label>
+      <input type="range" id="click-volume" name="click-volume" min="0" max="100" value="50">
+      <label for="winner-volume">Winner Sound Volume:</label>
+      <input type="range" id="winner-volume" name="winner-volume" min="0" max="100" value="50">
+    </div>
+
+    <div class="container">
+      <div class="heading">
+        <h1 class="title">2048</h1>
+        <div class="scores-container">
+          <div class="score-container">0</div>
+        </div>
+      </div>
+
+      <div class="above-game">
+        <p class="game-intro">Join the numbers and get to the <strong>2048 tile!</strong></p>
+      </div>
+
+      <div class="game-container">
+        <div class="game-message">
+          <p></p>
+          <div class="lower">
+            <a class="keep-playing-button">Keep going</a>
+            <a class="retry-button">Try again</a>
+          </div>
+        </div>
+
+        <div class="grid-container">
+          <div class="grid-row">
+            <div class="grid-cell"></div>
+            <div class="grid-cell"></div>
+            <div class="grid-cell"></div>
+            <div class="grid-cell"></div>
+          </div>
+          <div class="grid-row">
+            <div class="grid-cell"></div>
+            <div class="grid-cell"></div>
+            <div class="grid-cell"></div>
+            <div class="grid-cell"></div>
+          </div>
+          <div class="grid-row">
+            <div class="grid-cell"></div>
+            <div class="grid-cell"></div>
+            <div class="grid-cell"></div>
+            <div class="grid-cell"></div>
+            </div>
+            <div class="grid-row">
+              <div class="grid-cell"></div>
+              <div class="grid-cell"></div>
+              <div class="grid-cell"></div>
+              <div class="grid-cell"></div>
+          </div>
+        </div>
+
+        <div class="tile-container">
+        </div>
+      </div>
+      <div id="podinfo" class="game-explanation">
+      </div>
+
+      <!-- Place buttons below the game grid -->
+      <div class="game-buttons" style="text-align: center; margin-top: 20px;">
+        <button class="reset-button" id="reset-button">Reset Game</button>
+        <a class="restart-button" id="new-game-button" style="margin-left: 10px;">New Game</a>
+      </div>
+
+    </div>
+
+    <div class="left-instruction-container">
+      <p class="important">HOW TO PLAY:</p>
+      <p>Use your <strong>arrow keys</strong> to move the tiles. When two tiles with the same number touch, they <strong>merge into one!</strong></p>
+    </div>
+    
+    
+
+    <audio id="click-sound" src="sound/click.mp3"></audio>
+    <audio id="winner-sound" src="sound/winner.mp3"></audio>
+
+    <script>
+      document.getElementById("game-2048").addEventListener("click", function () {
+        document.getElementById("title-bar").style.display = "none"; // Hide the title bar on the title screen
+        document.querySelector(".title-screen").style.display = "none";
+        document.getElementById("instructions-container").style.display = "flex";
+      });
+
+      document.getElementById("start-game").addEventListener("click", function () {
+        document.getElementById("instructions-container").style.display = "none";
+        document.getElementById("game-screen").style.display = "block";
+        document.getElementById("title-bar").style.display = "block"; // Show the title bar during the game
+      });
+
+      document.getElementById("reset-button").addEventListener("click", function () {
+        document.getElementById("game-screen").style.display = "none";
+        document.querySelector(".title-screen").style.display = "flex";
+        document.getElementById("title-bar").style.display = "block"; // Show the title bar again
+      });
+
+      const clickVolumeSlider = document.getElementById('click-volume');
+      const winnerVolumeSlider = document.getElementById('winner-volume');
+
+      const clickSound = document.getElementById('click-sound');
+      const winnerSound = document.getElementById('winner-sound');
+
+      clickVolumeSlider.addEventListener('input', function () {
+        clickSound.volume = clickVolumeSlider.value / 100;
+      });
+
+      winnerVolumeSlider.addEventListener('input', function () {
+        winnerSound.volume = winnerVolumeSlider.value / 100;
+      });
+
+      function playClickSound() {
+        clickSound.play();
+      }
+
+      function playWinnerSound() {
+        winnerSound.play();
+      }
+    </script>
+
+    <script src="script.js"></script>
+    <script src="bind_polyfill.js"></script>
+    <script src="classlist_polyfill.js"></script>
+    <script src="animframe_polyfill.js"></script>
+    <script src="keyboard_input_manager.js"></script>
+    <script src="html_actuator.js"></script>
+    <script src="grid.js"></script>
+    <script src="tile.js"></script>
+    <script src="local_storage_manager.js"></script>
+    <script src="game_manager.js"></script>
+    <script src="application.js"></script>
+
+  </div>
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
